@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+</head>
+<body>
+    <h1>Sign Up Here</h1>
+    <form id="signupForm" autocomplete="off">
+        <label>
+            Email : <input type="text" id = "email" name = "email">
+        </label>
+        <br><br>
+        <label>
+            Name : <input type="text" id = "name" name = "name">
+        </label>
+        <br><br>
+        <label>
+            Date of Birth : <input type="date" id = "dob" name = "dob">
+        </label>
+        <br><br>
+        <label>
+            Gender : 
+            <select id = "gender" name = "gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other"> other</option>
+            </select>
+        </label>
+        <br><br>
+        <label>
+            Address : <input type="text" id = "address" name = "address">
+        </label>
+        <br><br>
+        <label>
+            Password : <input type="password" id = "password" name = "password">
+        </label>
+        <br><br>
+        <label>
+            Confirm Password : <input type="password" id = "confirm">
+        </label>
+        <br><br>
+        <input type="submit" value = "Sign Up" id = "signupButton">
+    </form>
+    <script src = "signup.js"></script>
+</body>
+</html>

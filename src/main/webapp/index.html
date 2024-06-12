@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Train Search</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <button class="navbar-buttons" id = "loginButton">Login</button>
+            <button class="navbar-buttons" id = "signupButton">Signup</button>
+        </div>
+    </nav>
+    <h1 id="heading">Travel</h1>
+    <div class="container">
+        <div class="box" id="box1">
+            <h2>Search Train</h2>
+            <form id="searchForm" autocomplete="off">
+                <lable for = "_from"> From : </lable>
+                <input type="text" id="_from" value=" ">
+                <div id="suggestionsFrom" class="autocomplete-suggestions"></div>
+                <br><br>
+                <lable for = "_to"> To   : </lable>
+                <input type="text" id="_to" value=" ">
+                <div id="suggestionsTo" class="autocomplete-suggestions"></div>
+                <br><br>
+                <button type="submit">Search</button>
+                <button id = "swapButton">Swap</button> 
+            </form>
+            <br><br>
+            <div class="trains">
+                <table>
+                    <tbody id ="train-lists">
+                    </tbody>
+                </table>
+            </div>
+            <br><br>
+        </div>
+        
+    <script src="script.js"></script>
+    <script src="suggestion.js"></script>
+</body>
+</html>

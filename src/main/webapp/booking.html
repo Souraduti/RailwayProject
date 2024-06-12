@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking</title>
+    <style>
+        /* Navbar styling */
+    .navbar {
+        background-color: #ece4e4;
+        width: 100%;
+        height: 45px;
+        overflow: hidden;
+    }
+
+    /* Container for the buttons */
+    .navbar-container {
+        display: flex;
+        justify-content: right;
+        align-items: center; 
+        height: 80%; 
+    }
+
+    /* Styling for the navigation buttons */
+    .navbar-buttons {
+        display: inline-block;
+        text-align: center;
+        padding: 8px 20px;
+        margin: 5px 10px;
+    }
+
+    /* Change color on hover */
+    .nav-button:hover {
+        background-color: #ddd;
+        color: black;
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <button class="navbar-buttons" id = "loginButton">Login</button>
+            <button class="navbar-buttons" id = "signupButton">Signup</button>
+        </div>
+    </nav>
+    <div class="box" id="box2">
+        <h2>Book Here</h2>
+        <form id="bookForm"  >
+                <lable>
+                    Train Number: <input type="text" value="" id ="train_no" name = "train_no">
+                </lable>
+                <br><br>
+                <lable>
+                    Train: <input type="text" value="" id ="train_name" name = "train_name">
+                </lable>
+                <br><br>
+                <label> 
+                    From : <input type="text" name = "from" id ="from" value="">
+                </label>
+                <br><br>
+                <label> 
+                    To : <input type="text" name = "to" id ="to" value="">
+                </label>
+                <br><br>
+                <label>
+                    Number of Seats : <input type="number" id ="_num" max="20"  min = "1" value="1" name = "count">
+                </label>
+                <br><br>
+                <label>
+                    Date : <input type="date" id = "dep_date" name="dep_date">
+                </label>
+                <br><br>
+                <input type="submit" value="BOOK NOW">
+            </form>
+    </div>
+
+    <button onclick="testing()">test</button>
+    <script src="booking.js"></script>
+</body>
+</html>
