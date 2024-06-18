@@ -43,7 +43,7 @@ public class RouteFinder implements ApiExecutor {
                     WHERE
                         src.station_code = ?
                         AND dst.station_code = ?
-                        AND src.stoppage_no < dst.stoppage_no      
+                        AND src.stoppage_no < dst.stoppage_no;
                     """;
 
             List<Object> params = new ArrayList<>();
@@ -53,9 +53,9 @@ public class RouteFinder implements ApiExecutor {
 
             while (resultSet.next()) {
                 JSONObject trainDetails = new JSONObject();
-                trainDetails.put("train_number", resultSet.getString("trainID"));
+                trainDetails.put("train_number", resultSet.getInt("train_no"));
                 trainDetails.put("train_name", resultSet.getString("train_name"));
-                trainDetails.put("available",resultSet.getString("available_seats"));
+                trainDetails.put("available",resultSet.getInt("available_seats"));
                 trains.add(trainDetails);
             }
             JSONObject responseObject = new JSONObject();

@@ -48,10 +48,11 @@ document.getElementById("signupForm").addEventListener("submit",(e)=>{
         return response.json();
       })
       .then((value)=>{
-        if(value.status==="failed"){
+        console.log(value);
+        if(value.signup_status==="failed"){
             alert(value.cause);
         }else{
-            window.location.href = "/railwayProject/login.html";
+            window.history.back();
         }
       })
       .catch((e)=>{

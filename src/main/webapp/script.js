@@ -19,10 +19,15 @@ document.getElementById("searchForm").addEventListener("submit",(e)=>{
         alert("Invalid Station Code")
     }
 
-    let url = URL +"/get-route"+ "?"+"from="+from+"&"+"to"+"="+to;
+    let url = URL +"/route"+ "?"+"from="+from+"&"+"to"+"="+to;
     boarding = from;
     deboarding = to;
-    fetch(url)
+    fetch(url,{
+        method:'GET',
+        headers:{
+            Authorization: 'Bearer '+sessionStorage.getItem("token")
+        }
+    })
     .then(response => {
         if(response.status!=200){
             return null;

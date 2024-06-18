@@ -5,5 +5,5 @@ import java.util.Map;
 
 public interface ApiExecutor {
     Response execute(Map<String, String> parameters) throws Exception;
-    Response validate(Map<String, String > parameters) throws Exception;
+    Response validate(Map<String, String> parameters) throws Exception;
 }

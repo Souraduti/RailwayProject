@@ -34,7 +34,7 @@ public class StationSuggestion implements ApiExecutor {
         }
         JSONObject responseObject = new JSONObject();
         responseObject.put("suggestion_list",new JSONArray(suggestions));
-         return ResponseCreator.sendResponse(responseObject, ResponseStatus.OK);
+        return ResponseCreator.sendResponse(responseObject, ResponseStatus.OK);
     }
 
     @Override

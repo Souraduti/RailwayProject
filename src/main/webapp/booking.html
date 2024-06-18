@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Booking</title>
     <style>
         /* Navbar styling */
@@ -63,18 +66,40 @@
                 </label>
                 <br><br>
                 <label>
-                    Number of Seats : <input type="number" id ="_num" max="20"  min = "1" value="1" name = "count">
-                </label>
-                <br><br>
-                <label>
                     Date : <input type="date" id = "dep_date" name="dep_date">
                 </label>
                 <br><br>
-                <input type="submit" value="BOOK NOW">
+                <input type="submit" value="BOOK NOW"> 
+            </form>
+            <br><br>
+            <form id = passengerForm>
+                Passenger Details <br><br>
+                <label>
+                    Name : <input type="text" name="p_name" placeholder="Passenger Name">
+                </label>
+                <br><br>
+                <label>
+                    Adhaar : <input type="text" name="adhaar_no">
+                </label>
+                <br><br>
+                <label>
+                    Dob : <input type="date" name="dob" >
+                </label>
+                <br><br>
+                <label name="gender">
+                    Gender :
+                    <select name = "gender">
+                        <option value="M"> Male </option>
+                        <option value="F"> Female </option>
+                        <option value="O"> Others </option>
+                    </select>
+                </label>
+                <br><br>
+                <input type="submit" value = "Add details">
             </form>
     </div>
-
-    <button onclick="testing()">test</button>
+    <br><br>
+    <!-- <button onclick="testing()">test</button> -->
     <script src="booking.js"></script>
 </body>
 </html>

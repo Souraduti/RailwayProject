@@ -25,8 +25,8 @@ public class AllTrain implements  ApiExecutor{
 
             List<JSONObject> trains = new ArrayList<>();
             String sql = """
-                    SELECT 
-                        train_no, 
+                    SELECT
+                        train_no,
                         train_name, 
                         train_source, 
                         train_destination
@@ -35,7 +35,7 @@ public class AllTrain implements  ApiExecutor{
             ResultSet resultSet = DButility.selectQuery(sql);
             while (resultSet.next()){
                 JSONObject train = new JSONObject();
-                train.put("train_no",resultSet.getString("train_no"));
+                train.put("train_no",resultSet.getInt("train_no"));
                 train.put("train_name",resultSet.getString("train_name"));
                 train.put("train_source",resultSet.getString("train_source"));
                 train.put("train_destination",resultSet.getString("train_destination"));

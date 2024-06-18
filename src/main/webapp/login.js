@@ -17,7 +17,8 @@ document.getElementById("loginForm").addEventListener("submit",(e)=>{
         return response.json();
     })
     .then((value)=>{
-        if(value.status=="failed"){
+        if(value.login_status=="failed"){
+            console.log(value);
             alert("Wrong username or Password\n");
         }else{
             console.log(value.token);

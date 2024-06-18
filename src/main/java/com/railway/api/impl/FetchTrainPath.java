@@ -34,7 +34,6 @@ public class FetchTrainPath implements ApiExecutor{
             JSONObject responseObject = new JSONObject();
             responseObject.put("halt_list", new JSONArray(halts));
             return ResponseCreator.sendResponse(responseObject, ResponseStatus.OK);
-
     }
     @Override
     public Response validate(Map<String, String> parameters) throws Exception {

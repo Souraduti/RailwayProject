@@ -9,7 +9,13 @@ function suggestionHandler(e){
 
 function fetchSuggestions(query,target){
     let url = "/railwayProject/webapi/root/suggestion?query="+query;
-    let suggestion = fetch(url)
+    let suggestion = fetch(url,
+        {
+        method:'GET',
+        headers:{
+            Authorization: 'Bearer '+sessionStorage.getItem("token")
+        }
+    })
     .then((response)=>{
         if(response.status!=200){
             return null;

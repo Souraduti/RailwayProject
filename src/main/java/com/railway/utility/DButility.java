@@ -12,6 +12,11 @@ import java.util.*;
 public class DButility {
     private static void fillParameters(PreparedStatement ps, List<Object> params) throws Exception {
         for (int i = 0; i < params.size(); i++) {
+            if(params.get(i) instanceof java.util.Date){
+                //System.out.println("Date handled");
+                ps.setDate(i+1,new java.sql.Date(((Date) params.get(i)).getTime()));
+                continue;
+            }
             ps.setObject(i + 1, params.get(i));
         }
     }
@@ -64,9 +69,7 @@ public class DButility {
     public static int[] batchQuery(Connection con, String sql, List<List<Object>> params) throws Exception {
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         for (List<Object> param : params) {
-            for (int i = 0; i < param.size(); i++) {
-                preparedStatement.setObject(i + 1, param.get(i));
-            }
+            fillParameters(preparedStatement,param);
             preparedStatement.addBatch();
         }
         return preparedStatement.executeBatch();
@@ -81,8 +84,8 @@ public class DButility {
         }
     }
 
-    public static List<Map<String, Object>> getResultAsList(String sql, List<Object> params) throws Exception {
-        ResultSet resultSet = selectQuery(sql, params);
+    public static List<Map<String, Object>> getResultAsList(ResultSet resultSet) throws Exception {
+
         List<Map<String, Object>> results = new ArrayList<>();
         ResultSetMetaData metaData = resultSet.getMetaData();
         while (resultSet.next()) {

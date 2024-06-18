@@ -30,7 +30,7 @@ public class AvailableSeat implements  ApiExecutor{
                     JOIN train_stoppage dst ON src.train_no = dst.train_no
                     WHERE dst.train_no = ?
                     AND src.station_code = ?
-                    AND dst.station_code = ?;                    
+                    AND dst.station_code = ?;
                     """;
             List<Object> params = new ArrayList<>();
             params.add(Integer.parseInt(parameters.get("trainID")));
@@ -38,7 +38,8 @@ public class AvailableSeat implements  ApiExecutor{
             params.add(parameters.get("deboarding"));
             ResultSet resultSet = DButility.selectQuery(sql,params);
             JSONObject responseObject = new JSONObject();
-            int available_seat = resultSet.next()?resultSet.getInt("available_seat"):0;
+
+            int available_seat = (resultSet.next())?resultSet.getInt("available_seat"):0;
             responseObject.put("available_seats",available_seat);
             return ResponseCreator.sendResponse(responseObject, ResponseStatus.OK);
     }

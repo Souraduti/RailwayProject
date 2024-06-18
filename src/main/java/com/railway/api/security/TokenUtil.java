@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TokenUtil {
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private static final long EXPIRATION_TIME = TimeUnit.MINUTES.toMillis(10); // 10 min in milliseconds
+    private static final long EXPIRATION_TIME = TimeUnit.MINUTES.toMillis(15);
 
     public static String generateToken(String username) {
         return Jwts.builder()

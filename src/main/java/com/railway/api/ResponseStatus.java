@@ -41,7 +41,7 @@ public enum ResponseStatus {
 
         @Override
         public Response.Status getStatus() {
-            return null;
+            return Response.Status.BAD_REQUEST;
         }
     },
     CLASS_NOT_FOUND {
