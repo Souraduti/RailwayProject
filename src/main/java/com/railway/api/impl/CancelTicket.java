@@ -24,30 +24,8 @@ public class CancelTicket implements  ApiExecutor{
     public Response execute(Map<String, String> parameters) throws Exception {
         String insertSql =
                 """
-                       INSERT INTO booking_queue
-                       (
-                            id,
-                            u_email,
-                            train_no,
-                            boarding_stoppage_no,
-                            deboarding_stoppage_no,
-                            departure_date,
-                            is_cancel,
-                            booking_time,
-                            t_count
-                       )
-                       SELECT DISTINCT
-                            booking_id,
-                            u_email,
-                            train_no,
-                            boarding_stoppage_no,
-                            deboarding_stoppage_no,
-                            dep_date,
-                            TRUE,
-                            ?,?
-                       FROM passenger_details
-                       WHERE booking_id = ?
-                        """;
+                    INSERT INTO booking_queue(id,is_cancel,booking_time) VALUES ( ?,TRUE,?)
+                """;
         JSONObject requestBody = new JSONObject(parameters.get("requestBody"));
         String ticketNumber = requestBody.getString("ticket_no");
         String updateSql = """
@@ -65,15 +43,21 @@ public class CancelTicket implements  ApiExecutor{
         JSONObject responseBody = new JSONObject();
         try (Connection con = Connector.getConnection()){
             con.setAutoCommit(false);
-            DButility.otherQuery(con,insertSql,Arrays.asList(System.currentTimeMillis(),cancelList.length(),ticketNumber));
-            DButility.batchQuery(con,updateSql,params);
+            int rowsAffected = DButility.otherQuery(con,insertSql,Arrays.asList(ticketNumber,System.currentTimeMillis()));
+            /*If wrong ticket number is provided 0 insertion */
+            if(rowsAffected>0) DButility.batchQuery(con,updateSql,params);
             con.commit();
-            responseBody.put("cancellation_status","request_processed");
+            if(rowsAffected==0){
+                responseBody.put("cancellation_status","request_incomplete");
+                responseBody.put("cause","invalid ticket number");
+            }else{
+                responseBody.put("cancellation_status","request_processed");
+            }
         } catch (Exception e) {
             responseBody.put("cancellation_status","request_incomplete");
+            responseBody.put("developerMessage",e.getMessage());
             e.printStackTrace();
         }
         return ResponseCreator.sendResponse(responseBody, ResponseStatus.OK);
     }
 }
-

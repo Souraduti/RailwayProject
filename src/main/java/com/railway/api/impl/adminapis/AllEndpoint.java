@@ -16,14 +16,13 @@ public class AllEndpoint implements AdminApiExecutor{
     @Override
     public Response execute(Map<String, String> parameters) throws Exception {
            List<JSONObject> endpoints = new ArrayList<>();
-           String sql = """
-                   SELECT * FROM restapi_map
-                   """;
+           String sql = "SELECT * FROM restapi_map";
            ResultSet rs = DButility.selectQuery(sql);
            while (rs.next()) {
                JSONObject endpoint = new JSONObject();
                endpoint.put("endpoint",rs.getString("endpoint"));
                endpoint.put("api_class_name",rs.getString("api_class_name"));
+               endpoint.put("HTTP_method",rs.getString("api_method"));
                String requiredParamsCsv = rs.getString("required_parameters");
                if(requiredParamsCsv!=null){
                    endpoint.put("required_parameters",new JSONArray(requiredParamsCsv.split(",")));

@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public class UserRegistration implements ApiExecutor{
-    private boolean verify(){
-        return  false;
+    private boolean emailVerify(){
+        return  true;
     }
 
     @Override
@@ -42,34 +42,15 @@ public class UserRegistration implements ApiExecutor{
         } catch (Exception e) {
             responseBody.put("signup_status","failed");
             responseBody.put("cause","Email already in use");
-            System.out.println(e.getMessage());
-            //e.printStackTrace();
+            //System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         if(!responseBody.has("signup_status")) responseBody.put("signup_status","success");
-        return ResponseCreator.sendResponse(responseBody, ResponseStatus.OK);
+        return ResponseCreator.sendResponse(responseBody, ResponseStatus.CREATED);
     }
 
     @Override
     public Response validate(Map<String, String> parameters) throws Exception {
-
-        /*String email = (String) parameters.get("email");
-        System.out.println("email = " + email);
-        String sql = """
-                SELECT COUNT(*)
-                FROM customers
-                WHERE email = ?
-                """;
-        ResultSet resultSet = DButility.selectQuery(sql,List.of(email));
-        if(resultSet.next()){
-            int emailCount = resultSet.getInt(1);
-            //System.out.println("emailCount = " + emailCount);
-            if(emailCount!=0){
-                JSONObject responseObject = new JSONObject();
-                responseObject.put("Registration-status","failed");
-                responseObject.put("cause","email already in use");
-                return ResponseCreator.sendResponse(responseObject, ResponseStatus.OK);
-            }
-        }*/
         return null;
     }
 

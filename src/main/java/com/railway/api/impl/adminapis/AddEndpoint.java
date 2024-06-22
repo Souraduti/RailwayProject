@@ -20,7 +20,7 @@ public class AddEndpoint implements  AdminApiExecutor{
         params.add(parameters.get("api_method"));
         params.add(parameters.get("required_params"));
         int rowsAffected = DButility.otherQuery(sql,params);
-        return ResponseCreator.sendResponse(null, ResponseStatus.OK);
+        return ResponseCreator.sendResponse(null, ResponseStatus.CREATED);
     }
 
     @Override

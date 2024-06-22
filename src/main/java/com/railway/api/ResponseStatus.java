@@ -84,6 +84,19 @@ public enum ResponseStatus {
             responseBody.put("developerMessage","Logical error in Server Side ");
             return  responseBody;
         }
+    },
+    CREATED{
+        @Override
+        public Response.Status getStatus() {
+            return  Response.Status.CREATED;
+        }
+
+        @Override
+        public JSONObject getMessage() {
+            JSONObject responseBody = new JSONObject();
+            responseBody.put("message","resource created successfully");
+            return responseBody;
+        }
     };
     public abstract JSONObject getMessage();
     public abstract Response.Status getStatus();

@@ -30,32 +30,35 @@ public class BookingInfo {
         ownerThreadId = -1;
         params = new ArrayList<>();
     }
-    private void  fillWaitingPassengers(int trainID,Date dep_date) throws Exception{
+    private void  fillWaitingPassengers(int trainID,Date dep_date,String seatClass) throws Exception{
         String sql = """
                     SELECT *
                     FROM passenger_details
                     WHERE train_no = ?
-                    AND dep_date = ?
-                    AND reservation_status IN ('Waiting List','RAC')
+                    AND departure_date = ?
+                    AND seat_class = ?
+                    AND reservation_status IN ('WAITING LIST','RAC')
                     AND cancel_request = false
                     ORDER BY booking_time ASC
                     """;
-        ResultSet resultSet = DButility.selectQuery(sql, Arrays.asList(trainID,dep_date));
+        ResultSet resultSet = DButility.selectQuery(sql, Arrays.asList(trainID,dep_date,seatClass));
         waitingPassengers = DButility.getResultAsList(resultSet);
     }
     public boolean isInitialized() {
         return initialized;
     }
 
-    public void initialize(int train_no, Date date) throws Exception {
+    public void initialize(int train_no, Date date,String seatClass) throws Exception {
         String sql = """
                 SELECT available_seat,waiting,rac,seats
                 FROM seat_capacity
-                WHERE train_no = ? AND departure_date = ?
+                WHERE train_no = ? AND departure_date = ? AND seat_class = ?
                 ORDER BY stoppage_no ASC""";
         List<Object> params = new ArrayList<>();
         params.add(train_no);
         params.add(date);
+        params.add(seatClass);
+        //System.out.println("seatClass = " + seatClass);
         ResultSet rs = DButility.selectQuery(sql,params);
         this.seatStates = new ArrayList<>();
         stoppageCount = 0;
@@ -131,11 +134,11 @@ public class BookingInfo {
         return stoppageCount;
     }
 
-    public void fillCancelledSeats(int trainID, Date dep_date)  {
+    public void fillCancelledSeats(int trainID, Date dep_date,String seatClass)  {
         System.out.println("fill up invoked");
         if(waitingPassengers==null){
             try {
-                fillWaitingPassengers(trainID,dep_date);
+                fillWaitingPassengers(trainID,dep_date,seatClass);
             } catch (Exception e) {
                 e.printStackTrace();
                 return;
@@ -169,13 +172,13 @@ public class BookingInfo {
             } else if (isRac) {
                 /*Rac to confirm*/
                 System.out.println("Rac to Confirm");
-                reservation_status = "confirmed";
+                reservation_status = "CONFIRM";
                 updateRac(from,to,-1);
                 bookSeat(from, to, seatNumber);
             } else {
                 /*Waiting list to confirm*/
                 System.out.println("WaitingList to Confirm");
-                reservation_status = "confirmed";
+                reservation_status = "CONFIRM";
                 updateWaiting(from,to,-1);
                 updateAvailableSeat(from,to,-1);
                 bookSeat(from, to, seatNumber);

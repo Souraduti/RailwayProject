@@ -27,13 +27,7 @@ public class RouteFinder implements ApiExecutor {
                         src.station_code AS src_station_code,
                         dst.station_code AS dst_station_code,
                         src.stoppage_no AS src_stoppage,
-                        dst.stoppage_no AS dest_stoppage,
-                        (
-                            SELECT MIN(available_capacity)
-                            FROM seat_capacity
-                            WHERE seat_capacity.train_no = src.train_no
-                            AND stoppage_no BETWEEN src.stoppage_no AND dst.stoppage_no
-                        ) AS available_seats
+                        dst.stoppage_no AS dest_stoppage
                     FROM
                         train_stoppage src
                     INNER JOIN
@@ -55,7 +49,6 @@ public class RouteFinder implements ApiExecutor {
                 JSONObject trainDetails = new JSONObject();
                 trainDetails.put("train_number", resultSet.getInt("train_no"));
                 trainDetails.put("train_name", resultSet.getString("train_name"));
-                trainDetails.put("available",resultSet.getInt("available_seats"));
                 trains.add(trainDetails);
             }
             JSONObject responseObject = new JSONObject();

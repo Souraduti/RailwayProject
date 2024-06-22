@@ -35,18 +35,19 @@ public class Server {
         String queueSql = """
                 SELECT
                     booking_queue.id AS ticket_no,
-                    booking_queue.train_no,
-                    departure_date,
-                    booking_queue.boarding_stoppage_no AS from_st,
-                    booking_queue.deboarding_stoppage_no AS to_st,
+                    passenger_details.train_no,
+                    passenger_details.departure_date,
+                    passenger_details.seat_class,
+                    passenger_details.boarding_stoppage_no AS from_st,
+                    passenger_details.deboarding_stoppage_no AS to_st,
                     passenger_details.u_email,
-                    sl_no,
+                    passenger_details.sl_no,
                     is_cancel,
-                    seat_no
+                    passenger_details.seat_no
                 FROM booking_queue
                 INNER JOIN passenger_details
                 ON booking_queue.id = passenger_details.booking_id
-                WHERE is_cancel = false OR cancel_request = true
+                WHERE (is_cancel = false OR cancel_request = true) AND reservation_status != 'CANCELLED'
                 ORDER BY booking_queue.booking_time ASC
                 LIMIT ?
                 """;
@@ -58,7 +59,8 @@ public class Server {
             flag = true;
             int train_no = resultSet.getInt("train_no");
             Date date = resultSet.getDate("departure_date");
-            String key = train_no+"_"+date.toString();
+            String seat_class = resultSet.getString("seat_class");
+            String key = train_no+"_"+date.toString()+"_"+seat_class;
 
             if(!trainsBooked.containsKey(key)) {
                 trainsBooked.put(key, new BookingInfo());
@@ -108,13 +110,15 @@ public class Server {
                             WHERE train_no = ?
                                 AND departure_date = ?
                                 AND stoppage_no = ?
+                                AND seat_class = ?
                             """;
             List<List<Object>> seatUpdateParams = new ArrayList<>();
             for (String key : trainsBooked.keySet()) {
                 String[] parts = key.split("_");
 
                 int train_no = Integer.parseInt(parts[0]);
-                String departure_date = parts[1];
+                String departureDate = parts[1];
+                String seatClass = parts[2];
 
                 BookingInfo bookingInfo = trainsBooked.get(key);
 
@@ -126,8 +130,9 @@ public class Server {
                     params.add(bookingInfo.getSeatStates().get(i).getRac());
                     params.add(Utility.bitsetToString(bookingInfo.getSeatStates().get(i).getSeat()));
                     params.add(train_no);
-                    params.add(Utility.toDate(departure_date));
+                    params.add(Utility.toDate(departureDate));
                     params.add(i);
+                    params.add(seatClass);
 
                     seatUpdateParams.add(params);
                 }
@@ -169,12 +174,12 @@ public class Server {
                     server.clear();
                     boolean flag = server.fetchFromQueue();
                     if(flag){
-                    System.out.println("Fetching from the queue is complete");
-                    server.distributor();
-                    System.out.println("Distributing among threads");
-                    server.putInDatabase();
-                    System.out.println("Putting data back to database complete");
-                    System.out.println("Going to sleep");
+                        System.out.println("Fetching from the queue is complete");
+                        server.distributor();
+                        System.out.println("Distributing among threads");
+                        server.putInDatabase();
+                        System.out.println("Putting data back to database complete");
+                        System.out.println("Going to sleep");
                     }else{
                         System.out.println("Zero row fetched");
                     }

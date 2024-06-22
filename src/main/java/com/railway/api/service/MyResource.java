@@ -13,17 +13,13 @@ import javax.ws.rs.core.Response;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-/*
- *  Create an Admin Page -> will call a Post Api
- * initialize log4j
- */
-
 @Path("/root")
 public class MyResource {
     @Path("{generic:.*}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response endpointGet(@Context HttpServletRequest request, @PathParam("generic") String generic) {
+        System.out.println("GET endpoint called");
         try {
             //request.getSession();
             ApiService apiService = new ApiService();
@@ -96,22 +92,6 @@ public class MyResource {
         } catch (Exception e) {
             System.out.println("Catching " + e.getMessage());
             e.printStackTrace();
-            JSONObject responseBody = new JSONObject();
-            responseBody.put("error", e.getMessage());
-            return ResponseCreator.sendResponse(responseBody, ResponseStatus.ERROR);
-        }
-    }
-
-    @POST
-    @Path("/admin/{generic:.*}")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response adminEndpoint(@Context HttpServletRequest request, @PathParam("generic") String generic, MultivaluedMap<String, String> formParam) {
-        try {
-            ApiService apiService = new ApiService();
-            return apiService.callAPI(request, null, formParam, "POST", generic);
-        } catch (Exception e) {
-            System.out.println("Catching " + e.getMessage());
             JSONObject responseBody = new JSONObject();
             responseBody.put("error", e.getMessage());
             return ResponseCreator.sendResponse(responseBody, ResponseStatus.ERROR);

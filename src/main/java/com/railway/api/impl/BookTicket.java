@@ -6,73 +6,29 @@ import com.railway.databaseconnections.Connector;
 import com.railway.utility.DButility;
 import com.railway.utility.Utility;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.ws.rs.core.Response;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.util.*;
 
 public class BookTicket implements  ApiExecutor {
 
-
     @Override
     public Response validate(Map<String, String> parameters) throws Exception {
-        /*JSONObject requestBody = new JSONObject(parameters.get("requestBody"));
-        String sql = """
-                SELECT COUNT(*) AS isValid
-                FROM
-                    (SELECT stoppage_no FROM train_stoppage WHERE train_no = ? AND station_code = ?) src,
-                    (SELECT stoppage_no FROM train_stoppage WHERE train_no = ? AND station_code = ?) dst
-                WHERE src.stoppage_no < dst.stoppage_no;
-                """;
-        List<Object> params = new ArrayList<>();
-        params.add(Integer.parseInt(parameters.get("trainID")));
-        params.add(requestBody.get("from"));
-        params.add(Integer.parseInt(parameters.get("trainID")));
-        params.add(requestBody.get("to"));
-        ResultSet resultSet = DButility.selectQuery(sql, params);
-        if (!resultSet.next() || resultSet.getInt("isValid") == 0) {
-            JSONObject responseBody = new JSONObject();
-            responseBody.put("train_path", "invalid");
-            return ResponseCreator.sendResponse(responseBody,Response.Status.OK);
-        }*/
         return null;
     }
     @Override
     public Response execute(Map<String, String> parameters) throws Exception {
         String id = Utility.generateID();
-        String sql = """
-                INSERT INTO booking_queue (
-                    id,
-                    train_no,
-                    boarding_stoppage_no,
-                    deboarding_stoppage_no,
-                    departure_date,
-                    booking_time,
-                    t_count,
-                    u_email
-                    )
-                VALUES (
-                    ?,?,
-                    (SELECT stoppage_no FROM train_stoppage WHERE train_no = ? AND station_code = ?),
-                    (SELECT stoppage_no FROM train_stoppage WHERE train_no = ? AND station_code = ?),
-                    ?,?,?,?
-                );
+        String sql =
+                """
+                INSERT INTO booking_queue (id,booking_time) VALUES (?,?);
                 """;
         JSONObject requestBody = new JSONObject(parameters.get("requestBody"));
         List<Object> params = new ArrayList<>();
         params.add(id);
-        params.add(Integer.parseInt(parameters.get("trainID")));
-        params.add(Integer.parseInt(parameters.get("trainID")));
-        params.add(requestBody.get("from"));
-        params.add(Integer.parseInt(parameters.get("trainID")));
-        params.add(requestBody.get("to"));
-        params.add(Utility.toDate(requestBody.getString("dep_date")));
         params.add(System.currentTimeMillis());
-        params.add(requestBody.getJSONArray("passenger_list").length());
-        params.add(requestBody.get("u_email"));
 
         String passengerSql= """
                     INSERT INTO passenger_details(
@@ -82,13 +38,14 @@ public class BookTicket implements  ApiExecutor {
                     gender,
                     dob,
                     train_no,
-                    dep_date,
+                    departure_date,
+                    seat_class,
                     u_email,
                     boarding_stoppage_no,
                     deboarding_stoppage_no,
                     sl_no
                     )
-                    VALUES (?,?,?,?,?,?,?,?,
+                    VALUES (?,?,?,?,?,?,?,?,?,
                     (SELECT stoppage_no FROM train_stoppage WHERE train_no = ? AND station_code = ?),
                     (SELECT stoppage_no FROM train_stoppage WHERE train_no = ? AND station_code = ?),
                     ?)
@@ -109,6 +66,7 @@ public class BookTicket implements  ApiExecutor {
 
             passengerParam.add(Integer.parseInt(parameters.get("trainID")));
             passengerParam.add(Utility.toDate(requestBody.getString("dep_date")));
+            passengerParam.add(requestBody.getString("seat_class"));
             passengerParam.add(requestBody.get("u_email"));
             passengerParam.add(Integer.parseInt(parameters.get("trainID")));
             passengerParam.add(requestBody.get("from"));

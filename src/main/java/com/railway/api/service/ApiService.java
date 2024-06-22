@@ -55,7 +55,10 @@ public class ApiService {
 
     public Response callAPI(HttpServletRequest request, JSONObject requestBody, MultivaluedMap<String, String> formParams, String httpMethod, String url) throws Exception {
         String endpoint = getEndpoint(url);
+        //System.out.println("url = " + url);
+        //System.out.println("endpoint = " + endpoint);
         String searchKey = httpMethod + ":" + endpoint;
+        //System.out.println("searchKey = " + searchKey);
         List<ApiDetails> apiList = apiMap.getOrDefault(searchKey, null);
         boolean inCache = true;
         if (apiList == null) {
