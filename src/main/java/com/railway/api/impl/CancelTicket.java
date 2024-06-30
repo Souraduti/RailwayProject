@@ -31,23 +31,29 @@ public class CancelTicket implements  ApiExecutor{
         String updateSql = """
                 UPDATE passenger_details
                 SET cancel_request = true
-                WHERE booking_id = ? AND sl_no = ?
+                WHERE booking_id = ? AND sl_no = ? AND u_email = ?;
                 """;
         List<List<Object>> params = new ArrayList<>();
         JSONArray cancelList =  requestBody.getJSONArray("sl_no");
         for(int i =0;i<cancelList.length();i++){
             int serialNumber = cancelList.getInt(i);
-            params.add(Arrays.asList(ticketNumber,serialNumber));
+            params.add(Arrays.asList(ticketNumber,serialNumber,parameters.get("u_email")));
         }
 
         JSONObject responseBody = new JSONObject();
         try (Connection con = Connector.getConnection()){
             con.setAutoCommit(false);
-            int rowsAffected = DButility.otherQuery(con,insertSql,Arrays.asList(ticketNumber,System.currentTimeMillis()));
-            /*If wrong ticket number is provided 0 insertion */
-            if(rowsAffected>0) DButility.batchQuery(con,updateSql,params);
+            int [] res = DButility.batchQuery(con,updateSql,params);
+            boolean valid = false;
+            for(int it:res){
+                if(it!=0){
+                    valid = true;
+                    break;
+                }
+            }
+            if(valid) DButility.otherQuery(con,insertSql,Arrays.asList(ticketNumber,System.currentTimeMillis()));
             con.commit();
-            if(rowsAffected==0){
+            if(!valid){
                 responseBody.put("cancellation_status","request_incomplete");
                 responseBody.put("cause","invalid ticket number");
             }else{

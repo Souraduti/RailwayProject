@@ -11,6 +11,14 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>pdfServlet</servlet-name>
+        <servlet-class>com.railway.servlet.PdfServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>pdfServlet</servlet-name>
+        <url-pattern>/pdf/*</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Jersey Web Application</servlet-name>
         <url-pattern>/webapi/*</url-pattern>
