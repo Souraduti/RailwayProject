@@ -1,0 +1,38 @@
+<document>
+    <title>Indian Railways</title>
+    <ticket_number>6245367847745</ticket_number>
+    <train_number>12308</train_number>
+    <train_name>Rajdhani Express</train_name>
+    <train_trip_details>
+        <from>HWH</from>
+        <to>DLI</to>
+        <departure>10:45</departure>
+        <arrival>20:23</arrival>
+    </train_trip_details>
+    <passenger_details>
+        <header>
+            <details>Sl no.</details>
+            <details>Name</details>
+            <details>Reservation</details>
+            <details>Seat No</details>
+        </header>
+        <passenger>
+            <details>1</details>
+            <details>Debopriyo ghosh</details>
+            <details>Confirmed</details>
+            <details>68</details>
+        </passenger>
+        <passenger>
+            <details>2</details>
+            <details>Saikat Jana</details>
+            <details>Confirmed</details>
+            <details>69</details>
+        </passenger>
+        <passenger>
+            <details>3</details>
+            <details>Srila Parui</details>
+            <details>Confirmed</details>
+            <details>70</details>
+        </passenger>
+    </passenger_details>
+</document>
