@@ -1,0 +1,15 @@
+<passengers>
+    <sl_no>1</sl_no>
+    <name>Gautam Jalui</name>
+    <seat_no>1</seat_no>
+    <status>CONFIRM</status>
+</passengers>
+<passengers>
+    <sl_no>2</sl_no>
+    <name>Nilkamal Barman</name>
+    <seat_no>2</seat_no>
+    <status>CONFIRM</status>
+</passengers>
+<train_number>18622</train_number>
+<train_name>HATIA PATNA EXPRESS</train_name>
+<message>success</message>
