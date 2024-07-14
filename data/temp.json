@@ -1,0 +1,19 @@
+{
+  "passengers": [
+    {
+      "sl_no": "1",
+      "name": "Gautam Jalui",
+      "seat_no": "1",
+      "status": "CONFIRM"
+    },
+    {
+      "sl_no": "2",
+      "name": "Nilkamal Barman",
+      "seat_no": "2",
+      "status": "CONFIRM"
+    }
+  ],
+  "train_number": 18622,
+  "train_name": "HATIA PATNA EXPRESS",
+  "message": "success"
+}

@@ -26,4 +26,12 @@
     <session-config>
         <session-timeout>15</session-timeout>
     </session-config>
+    <filter>
+        <filter-name>CORSFilter</filter-name>
+        <filter-class>com.railway.api.service.CorsFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CORSFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>

@@ -97,7 +97,21 @@ public enum ResponseStatus {
             responseBody.put("message","resource created successfully");
             return responseBody;
         }
-    };
+    },
+    INVALID_PARAMETER_VALUE{
+        @Override
+        public Response.Status getStatus() {
+            return Response.Status.BAD_REQUEST;
+        }
+
+        @Override
+        public JSONObject getMessage() {
+            JSONObject responseBody  =new JSONObject();
+            responseBody.put("message","Invalid Parameter");
+            return responseBody;
+        }
+    }
+    ;
     public abstract JSONObject getMessage();
     public abstract Response.Status getStatus();
 }

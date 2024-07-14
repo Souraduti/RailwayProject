@@ -3,6 +3,7 @@ package com.railway.api.impl;
 import com.railway.api.ResponseCreator;
 import com.railway.api.ResponseStatus;
 import com.railway.utility.DButility;
+import com.railway.utility.Utility;
 import org.json.JSONObject;
 
 import javax.ws.rs.core.Response;
@@ -17,30 +18,35 @@ public class AvailableSeat implements  ApiExecutor{
 
             String sql = """
                     SELECT
-                        src.train_no,
-                        src.stoppage_no,
-                        dst.stoppage_no,
-                        (
-                            SELECT MIN(available_capacity)
-                            FROM seat_capacity
-                            WHERE train_no = src.train_no
-                            AND stoppage_no BETWEEN src.stoppage_no AND dst.stoppage_no
-                        ) AS available_seat
-                    FROM train_stoppage src
-                    JOIN train_stoppage dst ON src.train_no = dst.train_no
-                    WHERE dst.train_no = ?
-                    AND src.station_code = ?
-                    AND dst.station_code = ?;
+                        MIN(available_seat) AS seat_count,
+                        MAX(waiting) AS waiting_list,
+                        seat_class
+                    FROM
+                        seat_capacity
+                    WHERE
+                        train_no = ?
+                        AND departure_date = ?
+                        AND stoppage_no BETWEEN ? AND ?
+                    GROUP BY
+                        seat_class;
                     """;
             List<Object> params = new ArrayList<>();
             params.add(Integer.parseInt(parameters.get("trainID")));
-            params.add(parameters.get("boarding"));
-            params.add(parameters.get("deboarding"));
+            params.add(Utility.toDate(parameters.get("departure_date")));
+            params.add(Integer.parseInt(parameters.get("boarding")));
+            params.add(Integer.parseInt(parameters.get("deboarding")));
             ResultSet resultSet = DButility.selectQuery(sql,params);
             JSONObject responseObject = new JSONObject();
-
-            int available_seat = (resultSet.next())?resultSet.getInt("available_seat"):0;
-            responseObject.put("available_seats",available_seat);
+            while (resultSet.next()){
+                JSONObject seatInfo = new JSONObject();
+                int seatCount =  resultSet.getInt("seat_count");
+                int waitingList = resultSet.getInt("waiting_list");
+                String availability = (seatCount>0)?"available":"waiting List";
+                int count = (seatCount>0)?seatCount:waitingList;
+                seatInfo.put("availability",availability);
+                seatInfo.put("count",count);
+                responseObject.put(resultSet.getString("seat_class"),seatInfo);
+            }
             return ResponseCreator.sendResponse(responseObject, ResponseStatus.OK);
     }
     @Override

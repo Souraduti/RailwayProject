@@ -21,7 +21,7 @@ public class CreatePDFTest {
             FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
 
             // Setup output stream
-            OutputStream out = new FileOutputStream(new File("data/output.pdf"));
+            OutputStream out = new FileOutputStream("data/output4.pdf");
 
             // Construct FOP with desired output format
             Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
@@ -31,7 +31,8 @@ public class CreatePDFTest {
             Transformer transformer = factory.newTransformer(new StreamSource(new File("src/test/resources/template.xsl")));
 
             // Setup input for XSLT transformation
-            StreamSource src = new StreamSource(new File("src/test/resources/data.xml"));
+//            StreamSource src = new StreamSource(new File("src/test/resources/data.xml"));
+            StreamSource src = new StreamSource(new File("data/output3.xml"));
 
             // Resulting SAX events must be piped through to FOP
             SAXResult res = new SAXResult(fop.getDefaultHandler());

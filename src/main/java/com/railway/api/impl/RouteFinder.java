@@ -27,7 +27,9 @@ public class RouteFinder implements ApiExecutor {
                         src.station_code AS src_station_code,
                         dst.station_code AS dst_station_code,
                         src.stoppage_no AS src_stoppage,
-                        dst.stoppage_no AS dest_stoppage
+                        dst.stoppage_no AS dst_stoppage,
+                        src.departure_time,
+                        dst.arrival_time
                     FROM
                         train_stoppage src
                     INNER JOIN
@@ -49,6 +51,10 @@ public class RouteFinder implements ApiExecutor {
                 JSONObject trainDetails = new JSONObject();
                 trainDetails.put("train_number", resultSet.getInt("train_no"));
                 trainDetails.put("train_name", resultSet.getString("train_name"));
+                trainDetails.put("departure_time",resultSet.getString("departure_time"));
+                trainDetails.put("arrival_time",resultSet.getString("arrival_time"));
+                trainDetails.put("src_stoppage",resultSet.getString("src_stoppage"));
+                trainDetails.put("dst_stoppage",resultSet.getString("dst_stoppage"));
                 trains.add(trainDetails);
             }
             JSONObject responseObject = new JSONObject();

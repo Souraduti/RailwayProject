@@ -10,7 +10,7 @@
             </fo:layout-master-set>
             <fo:page-sequence master-reference="A4">
                 <fo:flow flow-name="xsl-region-body">
-                    <fo:block font-family="Times New Roman" font-size="30pt" font-weight="bold" text-align="center" margin-bottom="20pt" text-decoration="underline">
+                    <fo:block color="red" font-family="Times New Roman" font-size="30pt" font-weight="bold" text-align="center" margin-bottom="20pt" text-decoration="underline">
                         <xsl:value-of select="/document/title"/>
                     </fo:block>
                     <fo:block font-family="Times New Roman" margin-top="5" font-size="14" font-weight="bold">
@@ -22,11 +22,14 @@
                     <fo:block font-family="Times New Roman" margin-top="5" font-size="14" font-weight="bold">
                         <fo:inline font-weight="normal">Train Name: </fo:inline><xsl:value-of select="/document/train_name"/>
                     </fo:block>
+                    <fo:block font-family="Times New Roman" margin-top="5" font-size="14" font-weight="bold">
+                        <fo:inline font-weight="normal">Departure : </fo:inline><xsl:value-of select="/document/departure_date"/>
+                    </fo:block>
                     <fo:block font-family="Times New Roman" font-size="12pt" margin-top="20">
                         <fo:table width="100%">
-                            <fo:table-column column-width="20%"/>
-                            <fo:table-column column-width="60%"/>
-                            <fo:table-column column-width="20%"/>
+                            <fo:table-column column-width="25%"/>
+                            <fo:table-column column-width="50%"/>
+                            <fo:table-column column-width="25%"/>
                             <fo:table-body>
                                 <!-- First row -->
                                 <fo:table-row>
@@ -74,7 +77,7 @@
                         <fo:table border="0.5pt solid black" width="100%">
                             <fo:table-header>
                                 <fo:table-row>
-                                    <xsl:for-each select="/document/passenger_details/header/details">
+                                    <xsl:for-each select="/document/passenger_details/header/*">
                                         <fo:table-cell border="0.5pt solid black" padding="2pt">
                                             <fo:block font-family="Times New Roman" font-weight="bold" text-align="center">
                                                 <xsl:value-of select="."/>
@@ -86,7 +89,7 @@
                             <fo:table-body>
                                 <xsl:for-each select="/document/passenger_details/passenger">
                                     <fo:table-row>
-                                        <xsl:for-each select="details">
+                                        <xsl:for-each select="*">
                                             <fo:table-cell border="0.5pt solid black" padding="2pt">
                                                 <fo:block font-family="Times New Roman" text-align="center">
                                                     <xsl:value-of select="."/>
