@@ -71,13 +71,13 @@ public class ApiService {
         if (!inCache) {
             apiMap.put(searchKey, apiList);
         }
-        String authRes = authorize(request,endpoint);
+        /*String authRes = authorize(request,endpoint);
         if(authRes==null){
             //System.out.println("Authorization Fail");
             return ResponseCreator.sendResponse(null, ResponseStatus.AUTHORIZATION_FAIL);
-        }
+        }*/
         Map<String, String> parameters = prepareParameter(request, requestBody, formParams);
-        parameters.put("u_email",authRes);
+        //parameters.put("u_email",authRes);
         ApiDetails api = null;
         String[] urlParts = url.split("/");
         for (ApiDetails apiDetails : apiList) {

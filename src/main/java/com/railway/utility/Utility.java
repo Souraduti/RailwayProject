@@ -1,5 +1,11 @@
 package com.railway.utility;
 
+import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.BitSet;
@@ -66,5 +72,20 @@ public class Utility {
             sb.append( r.nextInt(10));
         }
         return  sb.toString();
+    }
+    public static JSONObject formatRequestBody(HttpServletRequest request) throws IOException {
+        JSONObject jsonObject = null;
+        if (request.getInputStream() != null) {
+            StringBuilder sb = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            String json = sb.toString();
+            //System.out.println("json = " + json);
+            jsonObject = new JSONObject(json);
+        }
+        return jsonObject;
     }
 }

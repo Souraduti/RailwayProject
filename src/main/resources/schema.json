@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "train_trip_details": {
+      "type": "object",
+      "properties": {
+        "arrival": {
+          "type": "string",
+          "pattern": "^\\d{2}:\\d{2}:\\d{2}$"
+        },
+        "from": {
+          "type": "string"
+        },
+        "departure": {
+          "type": "string",
+          "pattern": "^\\d{2}:\\d{2}:\\d{2}$"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "required": ["arrival", "from", "departure", "to"]
+    },
+    "passenger": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sl_no": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "seat_no": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["CONFIRM", "CANCELLED","UNPROCESSED","WAITING LIST","RAC"]
+          }
+        },
+        "required": ["sl_no", "name", "seat_no", "status"]
+      }
+    },
+    "ticket_number": {
+      "type": "string"
+    },
+    "train_number": {
+      "type": "integer"
+    },
+    "train_name": {
+      "type": "string"
+    },
+    "departure_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "message": {
+      "type": "string"
+    }
+  },
+  "required": ["train_trip_details", "passenger", "ticket_number", "train_number", "train_name", "departure_date", "message"]
+}
